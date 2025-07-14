@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 마이바티스 홈페이지에서 아래 코드 복사해옴 -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- 마이바티스 기본코드 -->    
+<!-- 인터페이스 명 --> 
+<mapper namespace="org.portfolio.mapper.PortfolioMapper">
+
+	<select id="getList2" resultType="org.portfolio.domain.PortfolioVO">
+		<![CDATA[select * from tbl_portfolio where bno>0]]>
+		<!-- CDATA는 쿼리문의 특수문자가 연산자가 아닌 글자 처리용 -->
+	</select>
+	
+	<!-- ============================================================== -->
+	
+	<!-- C-1 -->
+	<insert id="insert">
+		<![CDATA[
+			insert into tbl_portfolio (bno, title, content, writer) 
+			values (seq_portfolio.nextval, #{title}, #{content}, #{writer})
+		]]>	
+	</insert>
+	<!-- C-1 종료 -->
+	
+	<!-- ============================================================== -->
+	
+	<!-- C-2 -->
+	<insert id="insertSelectKey"> <!-- 사전에 자동번호를 먼저 가지고 와라 그값으로 bno를 넣겠다. -->
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+			select seq_portfolio.nextval from dual
+		</selectKey>
+		<![CDATA[
+			insert into tbl_portfolio (bno, title, content, writer) 
+			values (#{bno}, #{title}, #{content}, #{writer})
+		]]>	
+	</insert>
+	<!-- C-2 종료 -->
+	
+	<!-- ============================================================== -->
+	
+</mapper>
